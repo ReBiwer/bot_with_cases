@@ -1,5 +1,6 @@
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
+
 def yes_no_keyboard() -> ReplyKeyboardMarkup:
     keyboard = ReplyKeyboardMarkup(True, True)
     but_1 = KeyboardButton('Да')

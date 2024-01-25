@@ -4,12 +4,20 @@ import json
 from config_data.config import *
 from loader import bot
 from states.getting_weather import GettingWeather
-from keyboards.reply.yes_no_reply import yes_no_keyboard
+from keyboards.inline.yes_no_inline import keyboard_inline
 
 
 @bot.message_handler(commands=["find_weather"])
 def get_weather(message: Message):
     bot.set_state(message.from_user.id, GettingWeather.city, message.chat.id)
+    bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'да')
+def get_weather_again(call):
+    message = call.message
+    bot.set_state(message.from_user.id, GettingWeather.city, message.chat.id)
+    bot.send_message(message.chat.id, message.text)
     bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
 
 
@@ -26,15 +34,13 @@ def put_weather(message: Message):
             bot.send_photo(message.chat.id, file)
         bot.delete_state(message.from_user.id, message.chat.id)
 
-        bot.send_message(message.chat.id, 'Хотите узнать погоду в другом городе?', reply_markup=yes_no_keyboard())
-        bot.register_next_step_handler(message, following_next_state)
+        bot.send_message(message.chat.id, 'Хотите узнать погоду в другом городе?',
+                         reply_markup=keyboard_inline('да', 'нет'))
     else:
         bot.send_message(message.chat.id, 'Город указан не верно')
 
 
-def following_next_state(message: Message):
-    if message.text == 'Да':
-        bot.register_next_step_handler(message, get_weather)
-        bot.send_message(message.chat.id, 'Зареган следующий шаг get_weather')
-    else:
-        bot.send_message(message.chat.id, 'Выберите дальнейшее действие в меню', reply_markup=ReplyKeyboardRemove)
+@bot.callback_query_handler(func=lambda call: call.data == 'нет')
+def restart(call):
+    message = call.message
+    bot.send_message(message.chat.id, 'Выберите нужную команду в меню')
