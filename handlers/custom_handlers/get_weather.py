@@ -1,4 +1,4 @@
-from telebot.types import Message, ReplyKeyboardRemove
+from telebot.types import Message
 import requests
 import json
 from config_data.config import *
@@ -13,16 +13,10 @@ def get_weather(message: Message):
     bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'да')
-def get_weather_again(call):
-    message = call.message
-    bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
-
-
 @bot.message_handler(state=GettingWeather.city)
 def put_weather(message: Message):
     city = message.text.strip().lower()
-    res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={RAPID_API_KEY}&units=metric')
+    res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}&units=metric')
     if res.status_code == 200:
         data = json.loads(res.text)
         temp_in_city = data["main"]["temp"]
@@ -35,6 +29,12 @@ def put_weather(message: Message):
                          reply_markup=keyboard_inline('да', 'нет'))
     else:
         bot.send_message(message.chat.id, 'Город указан не верно')
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'да')
+def get_weather_again(call):
+    message = call.message
+    bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'нет')
