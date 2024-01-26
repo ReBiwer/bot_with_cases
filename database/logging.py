@@ -7,7 +7,7 @@ db = SqliteDatabase('database/loging_action.db')
 class User(Model):
     username = CharField()
     action = CharField()
-    time_action = DateField()
+    time_action = DateTimeField(formats='%Y-%m-%d %H:%M:%S')
 
     class Meta:
         database = db
