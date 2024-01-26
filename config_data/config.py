@@ -12,5 +12,6 @@ API_KEY_get_ip = os.getenv("API_KEY_get_ip")
 DEFAULT_COMMANDS = (
     ("start", "Запустить бота"),
     ("help", "Вывести справку"),
+    ("find_weather", "Узнать погоду"),
     ("get_ip_user", "Узнать узнать свой IP")
 )
