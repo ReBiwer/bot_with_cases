@@ -1,15 +1,16 @@
-from telebot.types import Message
+from telebot.types import Message, CallbackQuery
 import requests
 import json
 from config_data.config import *
 from loader import bot
 from states.getting_weather import GettingWeather
-from keyboards.inline.yes_no_inline import keyboard_inline
+from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
 
 
-@bot.message_handler(commands=["find_weather"])
-def get_weather(message: Message):
-    bot.set_state(message.from_user.id, GettingWeather.city, message.chat.id)
+@bot.callback_query_handler(func=lambda call: call.data == 'another_city')
+def weather_another_city(call: CallbackQuery):
+    message = call.message
+    bot.set_state(GettingWeather.id_user, GettingWeather.city)
     bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
 
 
@@ -26,7 +27,7 @@ def put_weather(message: Message):
             bot.send_photo(message.chat.id, file)
 
         bot.send_message(message.chat.id, 'Хотите узнать погоду в другом городе?',
-                         reply_markup=keyboard_inline('да', 'нет'))
+                         reply_markup=yes_no_keyboard_inline())
     else:
         bot.send_message(message.chat.id, 'Город указан не верно')
 
@@ -41,4 +42,6 @@ def get_weather_again(call):
 def restart(call):
     message = call.message
     bot.delete_state(message.chat.id)
-    bot.send_message(message.chat.id, 'Выберите нужную команду в меню')
+    bot.send_message(message.chat.id, 'Всего доброго:)\n '
+                                      'Если хотите снова узнать погоду и поднять настроение, '
+                                      'запустите бота снова через меню')
