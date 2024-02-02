@@ -20,8 +20,11 @@ def weather_now_city(call: CallbackQuery):
             data_for_weather = json.loads(res_weather_city.text)
             info_for_weather = weather_detection(data_for_weather)
             bot.send_message(message.chat.id, info_for_weather)
-            with open('images/dog_image.jpg', 'rb') as photo:
-                bot.send_photo(message.chat.id, photo)
+            req_url_photo = requests.get('https://dog.ceo/api/breeds/image/random')
+            data_req_url_photo = json.loads(req_url_photo.text)
+            url_photo = data_req_url_photo['message']
+            req_photo = requests.get(url_photo).content
+            bot.send_photo(message.chat.id, req_photo)
         else:
             bot.send_message(message.chat.id, 'Не можем получить информацию о погоде(\n'
                                               'Сервер не хочет говорить..')
