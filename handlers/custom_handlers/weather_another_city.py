@@ -5,8 +5,7 @@ from config_data.config import *
 from loader import bot
 from states.getting_weather import GettingWeather
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
-from handlers.custom_func.weather_detection import weather_another_city_detection
-from handlers.custom_func.get_photo_dog import get_photo_dog
+from handlers.custom_func import *
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
@@ -19,20 +18,21 @@ def weather_another_city(call: CallbackQuery):
 @bot.message_handler(state=GettingWeather.another_city)
 def put_weather(message: Message):
     city = message.text.strip().lower()
-    res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}'
-                       f'&units=metric&lang=ru')
-    if res.status_code == 200:
-        data = json.loads(res.text)
-        info_about_weather = weather_another_city_detection(data, city)
+    data_about_weather = get_weather_city(city)
+    if data_about_weather != 'Не удалось получить информацию о погоде в городе':
+        info_about_weather = weather_another_city_detection(data_about_weather, city)
         bot.send_message(message.chat.id, info_about_weather[0])
         bot.send_message(message.chat.id, info_about_weather[1])
-        photo = get_photo_dog()
-        bot.send_photo(message.chat.id, photo)
+
+        if isinstance(GettingWeather.downloads, str):
+            bot.send_message(message.chat.id, GettingWeather.downloads)
+        else:
+            bot.send_photo(message.chat.id, GettingWeather.downloads)
 
         bot.send_message(message.chat.id, 'Хотите узнать погоду в другом городе?',
                          reply_markup=yes_no_keyboard_inline())
     else:
-        bot.send_message(message.chat.id, 'Город указан не верно')
+        bot.send_message(message.chat.id, data_about_weather)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'да')
