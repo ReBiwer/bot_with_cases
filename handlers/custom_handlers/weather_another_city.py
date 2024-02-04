@@ -12,11 +12,11 @@ from handlers.custom_func.get_photo_dog import get_photo_dog
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
 def weather_another_city(call: CallbackQuery):
     message = call.message
-    bot.set_state(GettingWeather.id_user, GettingWeather.city)
+    bot.set_state(GettingWeather.id_user, GettingWeather.another_city)
     bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
 
 
-@bot.message_handler(state=GettingWeather.city)
+@bot.message_handler(state=GettingWeather.another_city)
 def put_weather(message: Message):
     city = message.text.strip().lower()
     res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}'
