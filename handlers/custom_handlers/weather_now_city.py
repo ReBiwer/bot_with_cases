@@ -4,7 +4,7 @@ import json
 from config_data.config import *
 from loader import bot
 from handlers.custom_func.weather_detection import weather_now_city_detection
-from handlers.custom_func.get_photo_dog import get_photo_dog
+from states.getting_weather import GettingWeather
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'now_city')
@@ -19,11 +19,14 @@ def weather_now_city(call: CallbackQuery):
         res_weather_city = requests.get(
             f'https://api.openweathermap.org/data/2.5/weather?q={now_city}&appid={API_KEY_weather}&units=metric&lang=ru')
         if res_weather_city.status_code == 200:
-            data_for_weather = json.loads(res_weather_city.text)
-            info_for_weather = weather_now_city_detection(data_for_weather)
-            bot.send_message(message.chat.id, info_for_weather)
-            photo = get_photo_dog()
-            bot.send_photo(message.chat.id, photo)
+            data_about_weather = json.loads(res_weather_city.text)
+            info_about_weather = weather_now_city_detection(data_about_weather)
+            bot.send_message(message.chat.id, info_about_weather[0])
+            bot.send_message(message.chat.id, info_about_weather[1])
+            if isinstance(GettingWeather.downloads, str):
+                bot.send_message(message.chat.id, GettingWeather.downloads)
+            else:
+                bot.send_photo(message.chat.id, GettingWeather.downloads)
         else:
             bot.send_message(message.chat.id, 'Не можем получить информацию о погоде(\n'
                                               'Сервер не хочет говорить..')

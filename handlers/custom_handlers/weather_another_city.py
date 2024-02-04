@@ -24,7 +24,8 @@ def put_weather(message: Message):
     if res.status_code == 200:
         data = json.loads(res.text)
         info_about_weather = weather_another_city_detection(data, city)
-        bot.send_message(message.chat.id, info_about_weather)
+        bot.send_message(message.chat.id, info_about_weather[0])
+        bot.send_message(message.chat.id, info_about_weather[1])
         photo = get_photo_dog()
         bot.send_photo(message.chat.id, photo)
 
@@ -44,6 +45,6 @@ def get_weather_again(call):
 def restart(call):
     message = call.message
     bot.delete_state(message.chat.id)
-    bot.send_message(message.chat.id, 'Всего доброго:)\n '
+    bot.send_message(message.chat.id, 'Всего доброго:)\n'
                                       'Если хотите снова узнать погоду и поднять настроение, '
                                       'запустите бота снова через меню')
