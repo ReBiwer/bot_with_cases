@@ -1,7 +1,7 @@
 from peewee import *
 
 
-db = SqliteDatabase('database/loging_action.db')
+db = SqliteDatabase('database/log_action.db')
 
 
 class User(Model):

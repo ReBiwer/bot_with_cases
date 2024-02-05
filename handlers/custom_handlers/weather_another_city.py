@@ -5,7 +5,9 @@ from config_data.config import *
 from loader import bot
 from states.getting_weather import GettingWeather
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
-from handlers.custom_func import *
+from handlers.custom_func.weather_in_city import get_weather
+from handlers.custom_func.weather_detection import weather_detection
+from handlers.custom_func.photo_dog import get_photo_dog
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
@@ -18,9 +20,9 @@ def weather_another_city(call: CallbackQuery):
 @bot.message_handler(state=GettingWeather.another_city)
 def put_weather(message: Message):
     city = message.text.strip().lower()
-    data_about_weather = get_weather_city(city)
+    data_about_weather = get_weather(city)
     if data_about_weather != 'Не удалось получить информацию о погоде в городе':
-        info_about_weather = weather_another_city_detection(data_about_weather, city)
+        info_about_weather = weather_detection(data_about_weather, city)
         bot.send_message(message.chat.id, info_about_weather[0])
         bot.send_message(message.chat.id, info_about_weather[1])
 
@@ -38,6 +40,7 @@ def put_weather(message: Message):
 @bot.callback_query_handler(func=lambda call: call.data == 'да')
 def get_weather_again(call):
     message = call.message
+    GettingWeather.downloads = get_photo_dog()
     bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
 
 

@@ -4,7 +4,7 @@ from database.logging import User
 from datetime import datetime
 from keyboards.inline.select_city import keyboard_selecе_city
 from states.getting_weather import GettingWeather
-from handlers.custom_func.get_photo_dog import get_photo_dog
+from handlers.custom_func.photo_dog import get_photo_dog
 
 
 @bot.message_handler(commands=["start"])
