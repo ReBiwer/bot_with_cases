@@ -4,7 +4,7 @@ from peewee import *
 db = SqliteDatabase('database/list_admins.db')
 
 
-class Admin(Model):
+class Admins(Model):
     id_admin = IntegerField()
     username_admin = CharField()
 
@@ -13,4 +13,4 @@ class Admin(Model):
 
 
 db.connect()
-db.create_tables([Admin])
+db.create_tables([Admins])
