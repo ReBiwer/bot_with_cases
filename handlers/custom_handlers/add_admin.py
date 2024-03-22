@@ -5,8 +5,8 @@ from telebot.types import Message
 
 @bot.message_handler(commands=['add_admin'])
 def add_admin(message: Message):
-    all_admins = [admin.id_admin for admin in Admin.select()]
-    if message.from_user.id not in all_admins:
+    id_all_admins = [admin.id_admin for admin in Admin.select()]
+    if message.from_user.id not in id_all_admins:
         new_admin = Admin(id_admin=message.from_user.id,
                           username_admin=message.from_user.username)
         new_admin.save()
