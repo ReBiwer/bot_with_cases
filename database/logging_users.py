@@ -4,7 +4,7 @@ from peewee import *
 db = SqliteDatabase('database/log_action.db')
 
 
-class User(Model):
+class UserAction(Model):
     id_user = IntegerField()
     username = CharField()
     action = CharField()
@@ -15,4 +15,4 @@ class User(Model):
 
 
 db.connect()
-db.create_tables([User])
+db.create_tables([UserAction])
