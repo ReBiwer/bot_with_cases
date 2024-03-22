@@ -15,3 +15,4 @@ def bot_start(message: Message):
     bot.send_message(message.chat.id, 'Приветствую, рад вас видеть!')
     bot.send_message(message.chat.id, 'В каком городе вы хотите узнать погоду?', reply_markup=keyboard_selecе_city())
     log_action('commands = ["start"]')
+    bot.send_message(message.chat.id, message)
