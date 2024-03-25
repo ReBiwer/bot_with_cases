@@ -1,7 +1,4 @@
 from telebot.types import Message, CallbackQuery
-import requests
-import json
-from config_data.config import *
 from loader import bot
 from states.getting_weather import GettingWeather
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
@@ -14,14 +11,14 @@ from handlers.custom_func.log_func import log_action
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
 def weather_another_city(call: CallbackQuery):
     message = call.message
-    log_action('call.data = "another_city"')
+    log_action('call.data = "another_city"', message)
     bot.set_state(GettingWeather.id_user, GettingWeather.another_city)
     bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
 
 
 @bot.message_handler(state=GettingWeather.another_city)
 def put_weather(message: Message):
-    log_action('state = GettingWeather.another_city')
+    log_action('state = GettingWeather.another_city', message)
     city = message.text.strip().lower()
     data_about_weather = get_weather(city)
     if data_about_weather != 'Не удалось получить информацию о погоде в городе':
