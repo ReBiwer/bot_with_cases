@@ -1,8 +1,10 @@
 from telebot.types import Message
+
+from keyboards.admin_buttons.inline.action_admin import action_admin
 from loader import bot
 from handlers.custom_func.log_func import log_action
 from handlers.custom_func.check_admin import check_admin_status
-from keyboards.inline.select_city import keyboard_selecе_city
+from keyboards.inline.project_selection_keyboard import project_selection_keyboard
 from states.getting_weather import GettingWeather
 from handlers.custom_func.photo_dog import get_photo_dog
 
@@ -13,13 +15,19 @@ def bot_start(message: Message):
     if check_admin_status(message):
         log_action('commands = ["start"]', message, check_admin=True)
 
-        bot.send_message(chat_id, f'Приветствую вас, администратор {message.from_user.username}')
+        bot.send_message(chat_id,
+                         f'Приветствую вас, администратор {message.from_user.username}',
+                         reply_markup=action_admin())
     else:
         bot.set_state(message.from_user.id, GettingWeather.id_user, chat_id)
         GettingWeather.id_user = chat_id
         GettingWeather.username_user = chat_id
         GettingWeather.downloads = get_photo_dog()
-        bot.send_message(chat_id, 'Приветствую, рад вас видеть!')
-        bot.send_message(chat_id, 'Хотите узнать погоду в своем городе?', reply_markup=keyboard_selecе_city())
+        bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
+                                  'Я создан с целью продемонстрировать кейсы моего создателя\n'
+                                  'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
+                                  'Кнопка репорта находится в "меню"')
+        bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
+                         reply_markup=project_selection_keyboard())
         log_action('commands = ["start"]', message)
         bot.send_message(chat_id, message)
