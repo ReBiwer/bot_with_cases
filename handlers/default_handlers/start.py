@@ -21,7 +21,7 @@ def bot_start(message: Message):
     else:
         bot.set_state(message.from_user.id, GettingWeather.id_user, chat_id)
         GettingWeather.id_user = chat_id
-        GettingWeather.username_user = chat_id
+        GettingWeather.username_user = message.from_user.username
         GettingWeather.downloads = get_photo_dog()
         bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
                                   'Я создан с целью продемонстрировать кейсы моего создателя\n'
