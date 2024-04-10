@@ -7,5 +7,4 @@ def check_admin_status(message: Message):
     id_user = message.from_user.id
     if id_user in id_all_admins:
         return True
-    else:
-        return False
+    return False
