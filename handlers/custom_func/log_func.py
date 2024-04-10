@@ -1,3 +1,6 @@
+from telebot import TeleBot
+
+from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
 from datetime import datetime
@@ -19,3 +22,15 @@ def log_action(action, message: Message, check_admin=False):
                                         time_action=datetime.now(),
                                         )
         user_action.save()
+
+
+def get_log_info(bot: TeleBot, id_user, check_admin=False):
+    if check_admin:
+        pass
+    else:
+        actions_user = UserAction.select().where(UserAction.id_user == id_user)
+        id_chat_admin = Admins.select().get().id_chat_with_bot
+        with open('handlers/custom_func/logs/test_logfile.log', 'w') as log_file:
+            log_file.writelines(actions_user)
+            bot.send_message(id_chat_admin, 'Пришел новый репорт')
+            bot.send_document(id_chat_admin, log_file)
