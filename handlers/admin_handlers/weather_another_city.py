@@ -20,7 +20,7 @@ def weather_another_city(call: CallbackQuery):
 def put_weather(message: Message):
     log_action('state = GettingWeather.another_city', message)
     city = message.text.strip().lower()
-    data_about_weather = get_weather(city)
+    data_about_weather = get_weather(city, message)
     if data_about_weather != 'Не удалось получить информацию о погоде в городе':
         info_about_weather = weather_detection(data_about_weather, city)
         bot.send_message(message.chat.id, info_about_weather[0])
