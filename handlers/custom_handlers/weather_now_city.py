@@ -1,4 +1,5 @@
 from telebot.types import CallbackQuery
+from handlers.custom_func.photo_dog import get_photo_dog
 from loader import bot
 from handlers.custom_func.name_now_city import get_name_now_city
 from handlers.custom_func.weather_detection import weather_detection
@@ -11,8 +12,9 @@ from handlers.custom_func.log_func import log_action
 def weather_now_city(call: CallbackQuery):
     """Получение текущего города пользователя и вывод погоды в его городе"""
     message = call.message
-    log_action('call.data = "city_username"', message)
+    GettingWeather.downloads = get_photo_dog()
     city_username = get_name_now_city()  # получаем имя города пользователя
+    log_action(f'call.data = "city_username". Город пользователя: {city_username}', message)
     if city_username != 'Не удалось получить имя вашего текущего города':
         data_about_weather = get_weather(city_username)  # получаем информацию о погоде в городе
         if data_about_weather != 'Не удалось получить информацию о погоде в городе':
