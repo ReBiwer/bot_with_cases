@@ -4,14 +4,13 @@ from config_data.config import *
 from handlers.custom_func.log_func import log_action
 from telebot.types import Message
 from loader import bot
-from states.admin_state import AdminState
 from states.user_state import UserState
 
 
 def get_weather(city, message: Message):
     req = requests.get(
         f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}&units=metric&lang=ru')
-    current_state: UserState | AdminState = bot.get_state(message.chat.id)
+    current_state: UserState = bot.get_state(message.chat.id)
     name_cur_state: str = current_state.__name__
     name_cur_action: str = current_state.action.__name__
     if req.status_code == 200:

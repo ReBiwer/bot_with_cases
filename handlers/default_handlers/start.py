@@ -1,6 +1,5 @@
 from telebot.types import Message
 from states.user_state import UserState
-from states.admin_state import AdminState
 from keyboards.admin_buttons.inline.action_admin import action_admin
 from loader import bot
 from handlers.custom_func.log_func import log_action
