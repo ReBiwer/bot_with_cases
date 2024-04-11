@@ -34,7 +34,8 @@ def put_log_info(bot: TeleBot, message: Message, check_admin=False):
         actions_user = UserAction.select().where(UserAction.id_user == id_user)
         id_admins = [admin.id_admin for admin in Admins.select()]
         with open('handlers/custom_func/logs/test_logfile.log', 'w') as log_file:
-            log_file.writelines(actions_user)
+            log_file.write(str(actions_user))
+        with open('handlers/custom_func/logs/test_logfile.log', 'r') as log_file:
             for id_chat in id_admins:
                 bot.send_message(id_chat, 'Пришел новый репорт')
                 bot.send_message(id_chat, f'Пользователь: {username}\n'
