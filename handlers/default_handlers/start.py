@@ -1,11 +1,11 @@
 from telebot.types import Message, CallbackQuery
 from states.user_state import UserState
-from keyboards.admin_buttons.inline.action_admin import action_admin
+from keyboards.admin_keyboards.inline.action_admin import action_admin
 from loader import bot
 from handlers.custom_func.log_func import log_action
 from handlers.custom_func.check_admin import check_admin_status
 from keyboards.inline.project_selection_keyboard import project_selection_keyboard
-from keyboards.admin_buttons.inline.user_choice import user_choice
+from keyboards.admin_keyboards.inline.user_choice import user_choice
 
 
 @bot.message_handler(commands=["start"])
