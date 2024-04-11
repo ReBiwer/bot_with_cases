@@ -24,4 +24,3 @@ def bot_start(message: Message):
         bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
                          reply_markup=project_selection_keyboard())
         log_action('commands = ["start"]', message)
-        bot.send_message(chat_id, message)
