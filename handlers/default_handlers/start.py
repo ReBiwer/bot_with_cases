@@ -1,5 +1,6 @@
 from telebot.types import Message
-
+from states.user_state import UserState
+from states.admin_state import AdminState
 from keyboards.admin_buttons.inline.action_admin import action_admin
 from loader import bot
 from handlers.custom_func.log_func import log_action
@@ -17,6 +18,7 @@ def bot_start(message: Message):
                          f'Приветствую вас, администратор {message.from_user.username}',
                          reply_markup=action_admin())
     else:
+        bot.set_state(message.from_user.id, UserState, chat_id)
         bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
                                   'Я создан с целью продемонстрировать кейсы моего создателя\n'
                                   'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
