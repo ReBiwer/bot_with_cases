@@ -31,7 +31,12 @@ def put_log_info(bot: TeleBot, message: Message, check_admin=False):
         id_user = message.from_user.id
         username = message.from_user.username
         user_report = message.text
-        actions_user = UserAction.select().where(UserAction.id_user == id_user)
+        actions_user = ''
+        for user in UserAction.select().where(UserAction.id_user == id_user):
+            actions_user += (f'ID_user: {user.id_user} -- '
+                             f'username: {user.username} -- '
+                             f'action: {user.action} -- '
+                             f'time_action: {user.time_action}\n')
         id_admins = [admin.id_admin for admin in Admins.select()]
         with open('handlers/custom_func/logs/test_logfile.log', 'w') as log_file:
             log_file.write(str(actions_user))
