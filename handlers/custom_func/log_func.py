@@ -4,24 +4,40 @@ from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
 from datetime import datetime
-from telebot.types import Message
+from telebot.types import Message, CallbackQuery
 
 
-def log_action(action, message: Message, check_admin=False):
+def log_action(action, message: Message | CallbackQuery, check_admin=False):
     if check_admin:
-        admin_action = AdminAction.create(id_admin=message.from_user.id,
-                                          username_admin=message.from_user.username,
-                                          action_admin=action,
-                                          time_action=datetime.now(),
-                                          )
-        admin_action.save()
+        if isinstance(message, Message):
+            admin_action = AdminAction.create(id_admin=message.from_user.id,
+                                              username_admin=message.from_user.username,
+                                              action_admin=action,
+                                              time_action=datetime.now(),
+                                              )
+            admin_action.save()
+        elif isinstance(message, CallbackQuery):
+            admin_action = AdminAction.create(id_admin=message.message.chat.id,
+                                              username_admin=message.message.chat.username,
+                                              action_admin=action,
+                                              time_action=datetime.now(),
+                                              )
+            admin_action.save()
     else:
-        user_action = UserAction.create(id_user=message.from_user.id,
-                                        username=message.from_user.username,
-                                        action=action,
-                                        time_action=datetime.now(),
-                                        )
-        user_action.save()
+        if isinstance(message, Message):
+            user_action = UserAction.create(id_user=message.from_user.id,
+                                            username=message.from_user.username,
+                                            action=action,
+                                            time_action=datetime.now(),
+                                            )
+            user_action.save()
+        elif isinstance(message, CallbackQuery):
+            user_action = UserAction.create(id_user=message.message.chat.id,
+                                            username=message.message.chat.username,
+                                            action=action,
+                                            time_action=datetime.now(),
+                                            )
+            user_action.save()
 
 
 def put_log_info(bot: TeleBot, message: Message, check_admin=False):
