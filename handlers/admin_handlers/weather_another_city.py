@@ -1,6 +1,5 @@
 from telebot.types import Message, CallbackQuery
 from loader import bot
-from states.getting_weather import GettingWeather
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
 from handlers.custom_func.weather_in_city import get_weather
 from handlers.custom_func.weather_detection import weather_detection

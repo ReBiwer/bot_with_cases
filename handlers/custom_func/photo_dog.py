@@ -7,9 +7,8 @@ from states.user_state import UserState
 
 
 def get_photo_dog(message: Message):
-    current_state: UserState = bot.get_state(message.chat.id)
-    name_cur_state: str = current_state.__name__
-    name_cur_action: str = current_state.action.__name__
+    name_cur_state: str = UserState.__name__
+    name_cur_action: str = UserState.action
     req_url_photo = requests.get('https://dog.ceo/api/breeds/image/random')
     if req_url_photo.status_code == 200:
         data_req_url_photo = json.loads(req_url_photo.text)

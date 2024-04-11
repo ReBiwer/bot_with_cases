@@ -35,7 +35,7 @@ def start_admin(call: CallbackQuery):
     UserState.admin = True
     bot.send_message(chat_id, f'Приветствую вас, администратор {call.message.chat.username}\n'
                               f'Что хотите протестировать?', reply_markup=action_admin())
-    log_action(f'Администратор {call.message.chat.username} зашел как админ', call)
+    log_action(f'Администратор {call.message.chat.username} зашел как админ', call.message)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'user_direction')
@@ -48,6 +48,6 @@ def start_admin(call: CallbackQuery):
                               'Кнопка репорта находится в "меню"')
     bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
                      reply_markup=project_selection_keyboard())
-    log_action(f'Администратор {call.message.chat.username} зашел как пользователь', call)
+    log_action(f'Администратор {call.message.chat.username} зашел как пользователь', call.message)
 
 

@@ -3,16 +3,16 @@ from handlers.custom_func.log_func import log_action
 from config_data.config import DEFAULT_COMMANDS
 from loader import bot
 from keyboards.inline.project_selection_keyboard import project_selection_keyboard
-from states.getting_weather import GettingWeather
 from handlers.custom_func.photo_dog import get_photo_dog
+from states.user_state import UserState
 
 
 @bot.message_handler(commands=["help"])
 def bot_help(message: Message):
     log_action('commands=["help"]', message)
-    GettingWeather.id_user = message.from_user.id
-    GettingWeather.username_user = message.from_user.username
-    GettingWeather.downloads = get_photo_dog()
+    UserState.id = message.from_user.id
+    UserState.username_user = message.from_user.username
+    UserState.downloads = get_photo_dog(message)
     bot.send_message(message.chat.id, 'Этот бот предназанчен для получения погоды\n'
                                       'В вашем городе или в любом другом, в каком только захотите')
     bot.send_message(message.chat.id, 'Выберите где вы хотите узнать погоду', reply_markup=project_selection_keyboard())

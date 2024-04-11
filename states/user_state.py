@@ -5,5 +5,7 @@ class UserState(StatesGroup):
     admin = False
     id = int()
     username = str()
-    action = StatesGroup()
+    action = str()
+    downloads = State()
+    city_username = State()
     current_message = None
