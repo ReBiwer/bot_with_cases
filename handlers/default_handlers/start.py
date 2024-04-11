@@ -5,8 +5,6 @@ from loader import bot
 from handlers.custom_func.log_func import log_action
 from handlers.custom_func.check_admin import check_admin_status
 from keyboards.inline.project_selection_keyboard import project_selection_keyboard
-from states.getting_weather import GettingWeather
-from handlers.custom_func.photo_dog import get_photo_dog
 
 
 @bot.message_handler(commands=["start"])

@@ -24,14 +24,20 @@ def log_action(action, message: Message, check_admin=False):
         user_action.save()
 
 
-def get_log_info(bot: TeleBot, id_user, check_admin=False):
+def put_log_info(bot: TeleBot, message: Message, check_admin=False):
     if check_admin:
         pass
     else:
+        id_user = message.from_user.id
+        username = message.from_user.username
+        user_report = message.text
         actions_user = UserAction.select().where(UserAction.id_user == id_user)
         id_admins = [admin.id_admin for admin in Admins.select()]
         with open('handlers/custom_func/logs/test_logfile.log', 'w') as log_file:
             log_file.writelines(actions_user)
             for id_chat in id_admins:
                 bot.send_message(id_chat, 'Пришел новый репорт')
+                bot.send_message(id_chat, f'Пользователь: {username}\n'
+                                          f'id пользователя: {id_user}\n'
+                                          f'Сообщение: {user_report}')
                 bot.send_document(id_chat, log_file)
