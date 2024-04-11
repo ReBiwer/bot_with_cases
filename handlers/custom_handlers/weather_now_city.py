@@ -5,7 +5,6 @@ from handlers.custom_func.name_now_city import get_name_now_city
 from handlers.custom_func.weather_detection import weather_detection
 from handlers.custom_func.weather_in_city import get_weather
 from states.getting_weather import GettingWeather
-from handlers.custom_func.log_func import log_action
 from states.user_state import UserState
 
 
