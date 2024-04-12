@@ -1,12 +1,14 @@
 import requests
 import json
 from config_data.config import *
+from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
 from telebot.types import Message
 from loader import bot
 from states.user_state import UserState
 
 
+@update_UserState_action
 def get_weather(city, message: Message):
     req = requests.get(
         f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}&units=metric&lang=ru')

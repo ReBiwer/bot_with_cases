@@ -1,6 +1,6 @@
 from telebot.types import Message, CallbackQuery
 
-
+from handlers.custom_func.decorators import update_UserState_action
 from keyboards.admin_keyboards.inline.user_choice import user_choice
 from keyboards.inline.project_selection_keyboard import project_selection_keyboard
 from loader import bot
@@ -13,6 +13,7 @@ from states.user_state import UserState
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
+@update_UserState_action
 def weather_another_city(call: CallbackQuery):
     message = call.message
     log_action('Команда - "weather_another_city"', message)
@@ -21,6 +22,7 @@ def weather_another_city(call: CallbackQuery):
     bot.register_next_step_handler(response_admin, put_weather)
 
 
+@update_UserState_action
 def put_weather(message: Message):
     city = message.text.strip().lower()
     log_action(f'Команда - "put_weather", город - {city}', message)
@@ -42,6 +44,7 @@ def put_weather(message: Message):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'да')
+@update_UserState_action
 def get_weather_again(call):
     message = call.message
     log_action('Команда - рестарт команды "put_weather"', message)

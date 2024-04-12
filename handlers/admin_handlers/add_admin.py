@@ -1,12 +1,12 @@
 from database.list_admins import Admins
+from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
 from loader import bot
 from telebot.types import Message
 
-from states.user_state import UserState
-
 
 @bot.message_handler(commands=['add_admin'])
+@update_UserState_action
 def add_admin(message: Message):
     id_all_admins = [admin.id_admin for admin in Admins.select()]
     if message.from_user.id not in id_all_admins:

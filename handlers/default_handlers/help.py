@@ -1,4 +1,6 @@
 from telebot.types import Message
+
+from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
 from config_data.config import DEFAULT_COMMANDS
 from loader import bot
@@ -8,6 +10,7 @@ from states.user_state import UserState
 
 
 @bot.message_handler(commands=["help"])
+@update_UserState_action
 def bot_help(message: Message):
     log_action('commands=["help"]', message)
     UserState.id = message.from_user.id

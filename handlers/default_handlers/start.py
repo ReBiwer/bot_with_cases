@@ -1,4 +1,6 @@
 from telebot.types import Message, CallbackQuery
+
+from handlers.custom_func.decorators import update_UserState_action
 from states.user_state import UserState
 from keyboards.admin_keyboards.inline.action_admin import action_admin
 from loader import bot
@@ -9,6 +11,7 @@ from keyboards.admin_keyboards.inline.user_choice import user_choice
 
 
 @bot.message_handler(commands=["start"])
+@update_UserState_action
 def bot_start(message: Message):
     chat_id = message.chat.id
     bot.set_state(message.from_user.id, UserState, chat_id)
@@ -30,6 +33,7 @@ def bot_start(message: Message):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'admin_direction')
+@update_UserState_action
 def start_admin(call: CallbackQuery):
     chat_id = call.message.chat.id
     UserState.admin = True
@@ -39,7 +43,8 @@ def start_admin(call: CallbackQuery):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'user_direction')
-def start_admin(call: CallbackQuery):
+@update_UserState_action
+def start_user(call: CallbackQuery):
     chat_id = call.message.chat.id
     UserState.admin = False
     bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
@@ -52,6 +57,7 @@ def start_admin(call: CallbackQuery):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'restart')
+@update_UserState_action
 def restart(call: CallbackQuery):
     message = call.message
     chat_id = message.chat.id

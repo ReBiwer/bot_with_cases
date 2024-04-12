@@ -4,3 +4,4 @@ from . import name_now_city
 from . import weather_in_city
 from . import log_func
 from . import check_admin
+from . import decorators

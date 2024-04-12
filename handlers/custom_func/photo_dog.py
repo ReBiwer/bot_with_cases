@@ -1,11 +1,14 @@
 import json
 import requests
+
+from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
 from telebot.types import Message
 from loader import bot
 from states.user_state import UserState
 
 
+@update_UserState_action
 def get_photo_dog(message: Message):
     name_cur_state: str = UserState.__name__
     name_cur_action: str = UserState.action

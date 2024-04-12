@@ -1,4 +1,6 @@
 from telebot.types import CallbackQuery
+
+from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.photo_dog import get_photo_dog
 from keyboards.inline.restart import restart_keyboard
 from loader import bot
@@ -9,6 +11,7 @@ from states.user_state import UserState
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'weather_user_city')
+@update_UserState_action
 def weather_user_city(call: CallbackQuery):
     """Получение текущего города пользователя и вывод погоды в его городе"""
     message = call.message
