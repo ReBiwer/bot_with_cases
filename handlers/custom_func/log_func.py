@@ -13,14 +13,14 @@ def log_action(action, message: Message | CallbackQuery):
     if UserState.admin:
         admin_action = AdminAction.create(id_admin=message.chat.id,
                                           username_admin=message.chat.username,
-                                          action_admin=action,
+                                          action_admin=action + ' (admin)',
                                           time_action=datetime.now(),
                                           )
         admin_action.save()
     else:
         user_action = UserAction.create(id_user=message.chat.id,
                                         username=message.chat.username,
-                                        action=action,
+                                        action=action + ' (user)',
                                         time_action=datetime.now(),
                                         )
         user_action.save()
