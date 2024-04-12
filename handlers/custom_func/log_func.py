@@ -26,8 +26,8 @@ def log_action(action, message: Message | CallbackQuery):
         user_action.save()
 
 
-def put_log_info(bot: TeleBot, message: Message, check_admin=False):
-    if check_admin:
+def put_log_info(bot: TeleBot, message: Message):
+    if UserState.admin:
         pass
     else:
         id_user = message.chat.id
