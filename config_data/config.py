@@ -7,6 +7,7 @@ else:
     load_dotenv('.env.template')
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+BUGREPORT_BOT_TOKEN = os.getenv("BUGREPORT_BOT_TOKEN")
 API_KEY_weather = os.getenv("API_KEY_weather")
 API_KEY_get_ip = os.getenv("API_KEY_get_ip")
 DEFAULT_COMMANDS = (
