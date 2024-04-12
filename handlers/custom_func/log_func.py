@@ -44,7 +44,7 @@ def put_log_info(bot: TeleBot, message: Message):
                              f'action: {user.action} -- '
                              f'time_action: {user.time_action}\n')
         id_admins = [admin.id_admin for admin in Admins.select()]
-        with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'w') as log_file:
+        with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'w', encoding='utf-8') as log_file:
             log_file.write(str(actions_user))
         with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'r') as log_file:
             for id_chat in id_admins:
