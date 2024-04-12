@@ -1,5 +1,6 @@
 from telebot.types import CallbackQuery
 from handlers.custom_func.photo_dog import get_photo_dog
+from keyboards.inline.restart import restart_keyboard
 from loader import bot
 from handlers.custom_func.name_now_city import get_name_now_city
 from handlers.custom_func.weather_detection import weather_detection
@@ -30,3 +31,4 @@ def weather_now_city(call: CallbackQuery):
             bot.send_message(message.chat.id, data_about_weather)
     else:
         bot.send_message(message.chat.id, res_city_username)
+    bot.send_message(message.chat.id, 'Вернуться к выбору кейсов', reply_markup=restart_keyboard())
