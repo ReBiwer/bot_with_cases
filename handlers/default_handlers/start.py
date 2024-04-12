@@ -13,7 +13,7 @@ def bot_start(message: Message):
     chat_id = message.chat.id
     bot.set_state(message.from_user.id, UserState, chat_id)
     if check_admin_status(message):
-        log_action('commands = ["start"]', message, check_admin=True)
+        log_action('Команда - start (admin)', message)
 
         bot.send_message(chat_id,
                          f'Приветствую вас, администратор {message.from_user.username}\n'
@@ -26,7 +26,7 @@ def bot_start(message: Message):
                                   'Кнопка репорта находится в "меню"')
         bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
                          reply_markup=project_selection_keyboard())
-        log_action('commands = ["start"]', message)
+        log_action('Команда - start (user)', message)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'admin_direction')
