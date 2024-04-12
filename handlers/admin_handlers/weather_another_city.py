@@ -1,4 +1,8 @@
 from telebot.types import Message, CallbackQuery
+
+
+from keyboards.admin_keyboards.inline.user_choice import user_choice
+from keyboards.inline.project_selection_keyboard import project_selection_keyboard
 from loader import bot
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
 from handlers.custom_func.weather_in_city import get_weather
@@ -11,14 +15,15 @@ from states.user_state import UserState
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
 def weather_another_city(call: CallbackQuery):
     message = call.message
-    log_action('call.data = "another_city"', call)
+    log_action('Команда - "weather_another_city"', message)
+    UserState.downloads = get_photo_dog(message)
     response_admin = bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)
 
 
 def put_weather(message: Message):
     city = message.text.strip().lower()
-    log_action(f'Получение погоды в городе: {city}', message)
+    log_action(f'Команда - "put_weather", город - {city}', message)
     data_about_weather = get_weather(city, message)
     if data_about_weather != 'Не удалось получить информацию о погоде в городе':
         info_about_weather = weather_detection(data_about_weather, city)
@@ -39,16 +44,7 @@ def put_weather(message: Message):
 @bot.callback_query_handler(func=lambda call: call.data == 'да')
 def get_weather_again(call):
     message = call.message
-    log_action('call.data = "да"', call)
+    log_action('Команда - рестарт команды "put_weather"', message)
     UserState.downloads = get_photo_dog(message)
     response_admin = bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)
-
-
-@bot.callback_query_handler(func=lambda call: call.data == 'нет')
-def restart(call):
-    message = call.message
-    log_action('call.data = "нет"', call)
-    bot.send_message(message.chat.id, 'Всего доброго:)\n'
-                                      'Если хотите снова узнать погоду и поднять настроение, '
-                                      'запустите бота снова через меню')

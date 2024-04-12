@@ -16,7 +16,7 @@ def bot_start(message: Message):
         log_action('Команда - start', message)
 
         bot.send_message(chat_id,
-                         f'Приветствую вас, администратор {message.from_user.username}\n'
+                         f'Приветствую вас, администратор {message.chat.username}\n'
                          f'Как бы вы хотели продолжить?',
                          reply_markup=user_choice())
     else:
@@ -51,3 +51,20 @@ def start_admin(call: CallbackQuery):
     log_action(f'Администратор {call.message.chat.username} зашел как пользователь', call.message)
 
 
+@bot.callback_query_handler(func=lambda call: call.data == 'restart')
+def restart(call: CallbackQuery):
+    message = call.message
+    chat_id = message.chat.id
+    log_action('Команда - рестарт', message)
+    if UserState.admin:
+        bot.send_message(chat_id,
+                         f'Снова приветствую вас, администратор {message.chat.username}\n'
+                         f'Как бы вы хотели продолжить?',
+                         reply_markup=user_choice())
+    else:
+        bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
+                                  'Я создан с целью продемонстрировать кейсы моего создателя\n'
+                                  'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
+                                  'Кнопка репорта находится в "меню"')
+        bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
+                         reply_markup=project_selection_keyboard())
