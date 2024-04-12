@@ -6,9 +6,11 @@ from database.logging_admins import AdminAction
 from datetime import datetime
 from telebot.types import Message, CallbackQuery
 
+from states.user_state import UserState
 
-def log_action(action, message: Message | CallbackQuery, check_admin=False):
-    if check_admin:
+
+def log_action(action, message: Message | CallbackQuery):
+    if UserState.admin:
         admin_action = AdminAction.create(id_admin=message.chat.id,
                                           username_admin=message.chat.username,
                                           action_admin=action,
