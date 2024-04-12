@@ -1,6 +1,9 @@
 from database.list_admins import Admins
+from handlers.custom_func.log_func import log_action
 from loader import bot
 from telebot.types import Message
+
+from states.user_state import UserState
 
 
 @bot.message_handler(commands=['add_admin'])
@@ -13,6 +16,8 @@ def add_admin(message: Message):
                                           f'id: {new_admin.id_admin}\n'
                                           f'username: {new_admin.username_admin}')
         new_admin.save()
+        log_action(f'Команда - add_admin, new_admin - {new_admin.username_admin}', message)
     else:
         bot.send_message(message.chat.id, f'Пользователь {message.from_user.username} '
                                           f'уже является администратором этого бота')
+        log_action(f'Команда - add_admin, администратор {message.chat.username} уже есть', message)
