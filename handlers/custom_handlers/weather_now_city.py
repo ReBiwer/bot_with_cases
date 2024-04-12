@@ -9,10 +9,9 @@ from states.user_state import UserState
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'weather_user_city')
-def weather_now_city(call: CallbackQuery):
+def weather_user_city(call: CallbackQuery):
     """Получение текущего города пользователя и вывод погоды в его городе"""
     message = call.message
-    UserState.action = 'Получение погоды городе пользователя'
     UserState.current_message = message
     UserState.downloads = get_photo_dog(message)
     res_city_username = UserState.city_username = get_name_now_city(message)  # получаем имя города пользователя
