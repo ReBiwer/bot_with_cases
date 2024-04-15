@@ -1,6 +1,6 @@
 from peewee import *
 
-db = SqliteDatabase('database/log_action_admin.db')
+db = SqliteDatabase('database/db_files/log_action_admin.db')
 
 
 class AdminAction(Model):

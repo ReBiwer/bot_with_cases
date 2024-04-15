@@ -1,7 +1,7 @@
 from peewee import *
 
 
-db = SqliteDatabase('database/list_admins.db')
+db = SqliteDatabase('database/db_files/list_admins.db')
 
 
 class Admins(Model):
