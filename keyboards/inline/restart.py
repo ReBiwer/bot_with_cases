@@ -1,7 +1,7 @@
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
-def restart_keyboard() -> InlineKeyboardMarkup:
+def restart_button() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     but = InlineKeyboardButton('Вернуться в меню', callback_data='restart')
     keyboard.add(but)
