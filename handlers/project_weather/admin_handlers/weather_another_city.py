@@ -1,13 +1,11 @@
 from telebot.types import Message, CallbackQuery
 
 from handlers.custom_func.decorators import update_UserState_action
-from keyboards.admin_keyboards.inline.user_choice import user_choice
-from keyboards.inline.project_selection_keyboard import project_selection_keyboard
 from loader import bot
 from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
-from handlers.custom_func.weather_in_city import get_weather
-from handlers.custom_func.weather_detection import weather_detection
-from handlers.custom_func.photo_dog import get_photo_dog
+from handlers.project_weather.funcs.weather_in_city import get_weather
+from handlers.project_weather.funcs.weather_detection import weather_detection
+from handlers.project_weather.funcs.photo_dog import get_photo_dog
 from handlers.custom_func.log_func import log_action
 from states.user_state import UserState
 

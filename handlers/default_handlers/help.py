@@ -2,10 +2,9 @@ from telebot.types import Message
 
 from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
-from config_data.config import DEFAULT_COMMANDS
 from loader import bot
 from keyboards.inline.project_selection_keyboard import project_selection_keyboard
-from handlers.custom_func.photo_dog import get_photo_dog
+from handlers.project_weather.funcs.photo_dog import get_photo_dog
 from states.user_state import UserState
 
 
