@@ -12,14 +12,10 @@ from states.user_state import UserState
 def get_weather(city, message: Message):
     req = requests.get(
         f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_weather}&units=metric&lang=ru')
-    name_cur_state: str = UserState.__name__
-    name_cur_action: str = UserState.action
     if req.status_code == 200:
         data = json.loads(req.text)
-        log_action(f'state={name_cur_state}, action={name_cur_action}\n'
-                   f'Статус запроса: {req.status_code}, информация о погоде: {data}', message)
+        log_action(f'Запрос погоды в городе {city} прошел успешно', message)
         return data
     else:
-        log_action(f'state={name_cur_state}, action={name_cur_action}\n'
-                   f'Статус запроса: {req.status_code}, информация о погоде: {req.text}', message)
+        log_action(f'Запрос погоды в городе {city} прошел не успешно. Статус кода: {req.status_code}', message)
         return 'Не удалось получить информацию о погоде в городе'

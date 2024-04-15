@@ -13,7 +13,7 @@ def log_action(mess_log, message: Message | CallbackQuery):
     if UserState.admin:
         admin_action = AdminAction.create(id_admin=message.chat.id,
                                           username_admin=message.chat.username,
-                                          action_admin=f'Action: {UserState.action} -- '
+                                          action_admin=f'handler: {UserState.action} -- '
                                                        f'message: {mess_log} -- '
                                                        f'access right: admin',
                                           time_action=datetime.now(),
@@ -22,9 +22,9 @@ def log_action(mess_log, message: Message | CallbackQuery):
     else:
         user_action = UserAction.create(id_user=message.chat.id,
                                         username=message.chat.username,
-                                        action=f'Action: {UserState.action} -- '
-                                                       f'message: {mess_log} -- '
-                                                       f'access right: user',
+                                        action=f'handler: {UserState.action} -- '
+                                               f'message: {mess_log} -- '
+                                               f'access right: user',
                                         time_action=datetime.now(),
                                         )
         user_action.save()

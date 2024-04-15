@@ -61,7 +61,7 @@ def start_user(call: CallbackQuery):
 def restart(call: CallbackQuery):
     message = call.message
     chat_id = message.chat.id
-    log_action('Команда - рестарт', message)
+    log_action('команда - рестарт', message)
     if UserState.admin:
         bot.send_message(chat_id,
                          f'Снова приветствую вас, администратор {message.chat.username}\n'
