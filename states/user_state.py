@@ -2,7 +2,8 @@ from telebot.handler_backends import State, StatesGroup
 
 
 class UserState(StatesGroup):
-    admin = False
+    admin_access = False
+    admin_status = False
     id = int()
     username = str()
     action = str()

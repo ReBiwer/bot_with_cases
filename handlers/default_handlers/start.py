@@ -15,7 +15,8 @@ from keyboards.admin_keyboards.inline.user_choice import user_choice
 def bot_start(message: Message):
     chat_id = message.chat.id
     bot.set_state(message.from_user.id, UserState, chat_id)
-    if check_admin_status(message):
+    UserState.admin_status = check_admin_status(message)
+    if UserState.admin_status:
         log_action('Команда - start', message)
 
         bot.send_message(chat_id,
@@ -36,7 +37,7 @@ def bot_start(message: Message):
 @update_UserState_action
 def start_admin(call: CallbackQuery):
     chat_id = call.message.chat.id
-    UserState.admin = True
+    UserState.admin_access = True
     bot.send_message(chat_id, f'Приветствую вас, администратор {call.message.chat.username}\n'
                               f'Что хотите протестировать?', reply_markup=action_admin())
     log_action(f'Администратор {call.message.chat.username} зашел как админ', call.message)
@@ -46,7 +47,7 @@ def start_admin(call: CallbackQuery):
 @update_UserState_action
 def start_user(call: CallbackQuery):
     chat_id = call.message.chat.id
-    UserState.admin = False
+    UserState.admin_access = False
     bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
                               'Я создан с целью продемонстрировать кейсы моего создателя\n'
                               'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
@@ -62,7 +63,7 @@ def restart(call: CallbackQuery):
     message = call.message
     chat_id = message.chat.id
     log_action('команда - рестарт', message)
-    if UserState.admin:
+    if UserState.admin_status:
         bot.send_message(chat_id,
                          f'Снова приветствую вас, администратор {message.chat.username}\n'
                          f'Как бы вы хотели продолжить?',

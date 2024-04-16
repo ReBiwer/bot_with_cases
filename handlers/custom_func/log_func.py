@@ -10,7 +10,7 @@ from states.user_state import UserState
 
 
 def log_action(mess_log, message: Message | CallbackQuery):
-    if UserState.admin:
+    if UserState.admin_access:
         admin_action = AdminAction.create(id_admin=message.chat.id,
                                           username_admin=message.chat.username,
                                           action_admin=f'handler: {UserState.action} -- '
@@ -31,7 +31,7 @@ def log_action(mess_log, message: Message | CallbackQuery):
 
 
 def put_log_info(bot: TeleBot, message: Message):
-    if UserState.admin:
+    if UserState.admin_access:
         pass
     else:
         id_user = message.chat.id
