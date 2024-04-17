@@ -1,5 +1,5 @@
 from telebot import TeleBot
-
+import os
 from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
@@ -49,6 +49,8 @@ def put_log_info(bot: TeleBot, message: Message):
                              f'action: {user.action} -- '
                              f'time_action: {user.time_action}\n')
         id_admins = [admin.id_admin for admin in Admins.select()]
+        if not os.path.exists('handlers/custom_func/logs'):
+            os.mkdir('handlers/custom_func/logs')
         with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'w', encoding='utf-8') as log_file:
             log_file.write(actions_user)
         with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'r', encoding='utf-8') as log_file:
