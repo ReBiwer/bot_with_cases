@@ -44,10 +44,10 @@ def put_log_info(bot: TeleBot, message: Message):
         user_report = message.text
         actions_user = ''
         for user in UserAction.select().where(UserAction.id_user == id_user and UserAction.time_action > date_day_ago):
-            actions_user += (f'ID_user: {user.id_user} -- '
-                             f'username: {user.username} -- '
-                             f'action: {user.action} -- '
-                             f'time_action: {user.time_action}\n')
+            actions_user += (f'ID_user - {user.id_user} |==| '
+                             f'username - {user.username} |==| '
+                             f'time_action - {user.time_action} |==| '
+                             f'info - {user.action}\n')
         id_admins = [admin.id_admin for admin in Admins.select()]
         if not os.path.exists('handlers/custom_func/logs'):
             os.mkdir('handlers/custom_func/logs')
