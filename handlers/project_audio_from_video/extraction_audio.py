@@ -2,6 +2,7 @@ from moviepy import editor
 from telebot.types import CallbackQuery, Message
 from handlers.custom_func.decorators import update_UserState_action
 from handlers.custom_func.log_func import log_action
+from keyboards.inline.restart import restart_button
 from loader import bot
 import os
 
@@ -38,7 +39,8 @@ def extraction_audio(message: Message):
     video_file = editor.VideoFileClip(filename_video)
     video_file.audio.write_audiofile(filename_audio)
 
-    bot.send_message(chat_id, 'Прошу, вот ваш файл')
     with open(filename_audio, 'rb') as audio:
         bot.send_document(chat_id, audio)
+
+    bot.send_message(chat_id, 'Прошу, вот ваш файл', reply_markup=restart_button())
     log_action('Аудио было извлечено успешно', message)
