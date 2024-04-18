@@ -26,12 +26,12 @@ def extraction_audio(message: Message):
     path_video_from_mes = bot.get_file(message.video.file_id).file_path
     download_video = bot.download_file(path_video_from_mes)
     path_dir = os.path.abspath(os.path.join('handlers', 'project_audio_from_video', 'download_files', f'{chat_id}'))
+    filename_video = f'{path_dir}\\{chat_id}_video.mp4'
+    filename_audio = f'{path_dir}\\{chat_id}_video.mp3'
 
     if not os.path.isdir(path_dir):
         os.mkdir(path_dir)
 
-    filename_video = f'{path_dir}\\{chat_id}_video.mp4'
-    filename_audio = f'{path_dir}\\{chat_id}_video.mp3'
     with open(filename_video, 'wb') as file:
         file.write(download_video)
 
