@@ -1,5 +1,9 @@
-from telebot import TeleBot
 import os
+import logging
+import logging.config
+from dict_config import dict_config
+from logging import Logger
+from telebot import TeleBot
 from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
@@ -60,3 +64,7 @@ def put_log_info(bot: TeleBot, message: Message):
                                           f'id пользователя: {id_user}\n'
                                           f'Сообщение: {user_report}')
                 bot.send_document(id_chat, log_file)
+
+
+logging.config.dictConfig(dict_config)
+logger = logging.getLogger("logger_bot")
