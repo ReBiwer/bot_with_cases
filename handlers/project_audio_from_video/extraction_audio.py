@@ -26,7 +26,7 @@ def extraction_audio(message: Message):
     chat_id = message.chat.id
     path_video_from_mes = bot.get_file(message.video.file_id).file_path
     download_video = bot.download_file(path_video_from_mes)
-    path_dir = os.path.abspath(os.path.join('handlers', 'project_audio_from_video', 'download_files', f'{chat_id}'))
+    path_dir = os.path.abspath(os.path.join('handlers', 'project_audio_from_video', 'download_files', f'{chat_id}_user'))
     filename_video = f'{path_dir}\\{chat_id}_video.mp4'
     filename_audio = f'{path_dir}\\{chat_id}_video.mp3'
 
