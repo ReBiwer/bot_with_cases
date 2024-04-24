@@ -11,7 +11,7 @@ from telebot.types import Message, CallbackQuery
 from states.user_state import UserState
 
 
-def log_action(mess_log, message: Message | CallbackQuery):
+def log_action(mess_log, message: Message):
     if UserState.admin_access:
         admin_action = AdminAction.create(id_admin=message.chat.id,
                                           username_admin=message.chat.username,
