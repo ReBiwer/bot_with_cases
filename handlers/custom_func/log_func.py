@@ -6,7 +6,7 @@ from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
 from datetime import datetime
-from telebot.types import Message, CallbackQuery
+from telebot.types import Message
 
 from states.user_state import UserState
 
