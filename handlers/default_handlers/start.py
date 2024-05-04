@@ -1,6 +1,7 @@
+import logging
 from telebot.types import Message, CallbackQuery
-
 from handlers.custom_func.decorators import update_UserState_action
+from handlers.custom_func.dict_config import get_dict_config
 from states.user_state import UserState
 from keyboards.admin_keyboards.inline.action_admin import action_admin
 from loader import bot
@@ -10,9 +11,11 @@ from keyboards.inline.project_selection_keyboard import project_selection_keyboa
 from keyboards.admin_keyboards.inline.user_choice import user_choice
 
 
+
 @bot.message_handler(commands=["start"])
 @update_UserState_action
 def bot_start(message: Message):
+    dict_logger = get_dict_config()
     chat_id = message.chat.id
     bot.set_state(message.from_user.id, UserState, chat_id)
     UserState.admin_status = check_admin_status(message)

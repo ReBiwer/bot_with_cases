@@ -10,3 +10,4 @@ class UserState(StatesGroup):
     downloads = State()
     city_username = State()
     current_message = None
+    current_logger = None
