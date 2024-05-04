@@ -9,10 +9,11 @@ from telebot.types import Message, CallbackQuery
 from states.user_state import UserState
 
 
-def log_action(mess_log, message: Message | CallbackQuery):
+def log_action(mess_log, message: Message):
+    name_user = message.chat.username if message.chat.username else message.chat.first_name
     if UserState.admin_access:
         admin_action = AdminAction.create(id_admin=message.chat.id,
-                                          username_admin=message.chat.username,
+                                          username_admin=name_user,
                                           action_admin=f'handler: {UserState.action} -- '
                                                        f'message: {mess_log} -- '
                                                        f'access right: admin',
@@ -21,7 +22,7 @@ def log_action(mess_log, message: Message | CallbackQuery):
         admin_action.save()
     else:
         user_action = UserAction.create(id_user=message.chat.id,
-                                        username=message.chat.username,
+                                        username=name_user,
                                         action=f'handler: {UserState.action} -- '
                                                f'message: {mess_log} -- '
                                                f'access right: user',
@@ -45,7 +46,7 @@ def put_log_info(bot: TeleBot, message: Message):
         actions_user = ''
         for user in UserAction.select().where(UserAction.id_user == id_user and UserAction.time_action > date_day_ago):
             actions_user += (f'ID_user - {user.id_user} |==| '
-                             f'username - {user.username} |==| '
+                             f'username - {user.name} |==| '
                              f'time_action - {user.time_action} |==| '
                              f'info - {user.action}\n')
         id_admins = [admin.id_admin for admin in Admins.select()]

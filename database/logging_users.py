@@ -6,7 +6,7 @@ db = SqliteDatabase('database/db_files/log_action_user.db')
 
 class UserAction(Model):
     id_user = IntegerField()
-    username = CharField()
+    name = CharField()
     action = CharField()
     time_action = DateTimeField(formats='%Y-%m-%d %H:%M:%S')
 
