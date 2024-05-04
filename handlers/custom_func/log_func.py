@@ -4,7 +4,7 @@ from database.list_admins import Admins
 from database.logging_users import UserAction
 from database.logging_admins import AdminAction
 from datetime import datetime
-from telebot.types import Message, CallbackQuery
+from telebot.types import Message
 
 from states.user_state import UserState
 
@@ -22,7 +22,7 @@ def log_action(mess_log, message: Message):
         admin_action.save()
     else:
         user_action = UserAction.create(id_user=message.chat.id,
-                                        username=name_user,
+                                        name=name_user,
                                         action=f'handler: {UserState.action} -- '
                                                f'message: {mess_log} -- '
                                                f'access right: user',
