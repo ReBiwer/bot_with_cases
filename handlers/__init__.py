@@ -1,4 +1,5 @@
 from . import project_weather
+from . import custom_func
 from . import project_audio_from_video
 from .project_weather import handlers
 from . import admin_handlers

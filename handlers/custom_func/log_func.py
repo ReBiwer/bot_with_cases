@@ -1,6 +1,6 @@
 import os
-import logging
-from dict_config import get_dict_config
+import logging.config
+from logging import Logger
 from telebot import TeleBot
 from database.list_admins import Admins
 from database.logging_users import UserAction
@@ -8,6 +8,44 @@ from database.logging_admins import AdminAction
 from datetime import datetime
 from telebot.types import Message
 from states.user_state import UserState
+
+
+def get_logger(name_user: str) -> Logger:
+    dict_config: dict = get_dict_config(name_user)
+    logging.config.dictConfig(dict_config)
+    logger: Logger = logging.getLogger(f'Пользователь: {name_user}')
+    return logger
+
+
+def get_dict_config(name_user: str):
+    dict_config = {
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "simple": {
+                    "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s",
+                }
+            },
+            "handlers": {
+                "util_handler": {
+                    "class": "logging.handlers.TimedRotatingFileHandler",
+                    "when": "h",
+                    "interval": 10,
+                    "backupCount": 5,
+                    "level": "INFO",
+                    "formatter": "simple",
+                    "filename": f"{name_user}.txt",
+                    "encoding": "utf-8",
+                }
+            },
+            "loggers": {
+                f'Пользователь: {name_user}': {
+                    "level": "INFO",
+                    "handlers": ["util_handler"]
+                },
+            },
+        }
+    return dict_config
 
 
 def log_action(mess_log, message: Message):
