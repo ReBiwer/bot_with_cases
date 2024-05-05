@@ -8,6 +8,7 @@ from database.logging_admins import AdminAction
 from datetime import datetime
 from telebot.types import Message
 from states.user_state import UserState
+from pathlib import Path
 
 
 def get_logger(name_user: str, id_user: int) -> Logger:
@@ -18,6 +19,7 @@ def get_logger(name_user: str, id_user: int) -> Logger:
 
 
 def get_dict_config(name_user: str, id_user: int):
+    path_to_file = Path(f'handlers/custom_func/logs/{name_user}_{id_user}.txt')
     dict_config = {
             "version": 1,
             "disable_existing_loggers": False,
@@ -34,7 +36,7 @@ def get_dict_config(name_user: str, id_user: int):
                     "backupCount": 5,
                     "level": "INFO",
                     "formatter": "simple",
-                    "filename": f"{name_user}_{id_user}.txt",
+                    "filename": path_to_file,
                     "encoding": "utf-8",
                 }
             },
