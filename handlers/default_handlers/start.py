@@ -14,7 +14,8 @@ from keyboards.admin_keyboards.inline.user_choice import user_choice
 @update_UserState_action
 def bot_start(message: Message):
     name_user = message.chat.username if message.chat.username else message.chat.first_name
-    logger: Logger = get_logger(name_user)
+    id_user = message.chat.id
+    logger: Logger = get_logger(name_user, id_user)
 
     chat_id = message.chat.id
     bot.set_state(message.from_user.id, UserState, chat_id)

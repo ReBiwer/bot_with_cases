@@ -10,38 +10,38 @@ from telebot.types import Message
 from states.user_state import UserState
 
 
-def get_logger(name_user: str) -> Logger:
-    dict_config: dict = get_dict_config(name_user)
+def get_logger(name_user: str, id_user: int) -> Logger:
+    dict_config: dict = get_dict_config(name_user, id_user)
     logging.config.dictConfig(dict_config)
-    logger: Logger = logging.getLogger(f'Пользователь: {name_user}')
+    logger: Logger = logging.getLogger(f'Пользователь: {name_user} ({id_user})')
     return logger
 
 
-def get_dict_config(name_user: str):
+def get_dict_config(name_user: str, id_user: int):
     dict_config = {
             "version": 1,
             "disable_existing_loggers": False,
             "formatters": {
                 "simple": {
-                    "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s",
+                    "format": "%(name)s | %(asctime)s | %(message)s",
                 }
             },
             "handlers": {
-                "util_handler": {
+                "base_handler": {
                     "class": "logging.handlers.TimedRotatingFileHandler",
                     "when": "h",
                     "interval": 10,
                     "backupCount": 5,
                     "level": "INFO",
                     "formatter": "simple",
-                    "filename": f"{name_user}.txt",
+                    "filename": f"{name_user}_{id_user}.txt",
                     "encoding": "utf-8",
                 }
             },
             "loggers": {
-                f'Пользователь: {name_user}': {
+                f'Пользователь: {name_user} ({id_user})': {
                     "level": "INFO",
-                    "handlers": ["util_handler"]
+                    "handlers": ["base_handler"]
                 },
             },
         }
