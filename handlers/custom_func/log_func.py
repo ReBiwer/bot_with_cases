@@ -20,62 +20,47 @@ def get_logger(name_user: str, id_user: int) -> Logger:
 def get_dict_config(name_user: str, id_user: int):
     path_to_file = Path(f'handlers/custom_func/logs/{name_user}_{id_user}.txt')
     dict_config = {
-            "version": 1,
-            "disable_existing_loggers": False,
-            "formatters": {
-                "simple": {
-                    "format": "%(name)s | %(asctime)s | %(message)s",
-                }
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "simple": {
+                "format": "%(name)s | %(asctime)s | %(message)s",
+            }
+        },
+        "handlers": {
+            "base_handler": {
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "when": "h",
+                "interval": 10,
+                "backupCount": 5,
+                "level": "INFO",
+                "formatter": "simple",
+                "filename": path_to_file,
+                "encoding": "utf-8",
+            }
+        },
+        "loggers": {
+            f'Пользователь: {name_user} ({id_user})': {
+                "level": "INFO",
+                "handlers": ["base_handler"]
             },
-            "handlers": {
-                "base_handler": {
-                    "class": "logging.handlers.TimedRotatingFileHandler",
-                    "when": "h",
-                    "interval": 10,
-                    "backupCount": 5,
-                    "level": "INFO",
-                    "formatter": "simple",
-                    "filename": path_to_file,
-                    "encoding": "utf-8",
-                }
-            },
-            "loggers": {
-                f'Пользователь: {name_user} ({id_user})': {
-                    "level": "INFO",
-                    "handlers": ["base_handler"]
-                },
-            },
-        }
+        },
+    }
     return dict_config
 
 
-def put_log_info(bot: TeleBot, message: Message):
-    if UserState.admin_access:
-        pass
-    else:
-        current_date = datetime.now()
-        format_date = '%Y-%m-%d %H:%M:%S'
-        day_ago: str = (f'{current_date.year}-{current_date.month}-{current_date.day-1} '
-                        f'{current_date.hour}:{current_date.minute}:{current_date.second}')
-        date_day_ago = datetime.strptime(day_ago, format_date)
-        id_user = message.chat.id
-        username = message.chat.username
-        user_report = message.text
-        actions_user = ''
-        for user in UserAction.select().where(UserAction.id_user == id_user and UserAction.time_action > date_day_ago):
-            actions_user += (f'ID_user - {user.id_user} |==| '
-                             f'username - {user.name} |==| '
-                             f'time_action - {user.time_action} |==| '
-                             f'info - {user.action}\n')
-        id_admins = [admin.id_admin for admin in Admins.select()]
-        if not os.path.exists('handlers/custom_func/logs'):
-            os.mkdir('handlers/custom_func/logs')
-        with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'w', encoding='utf-8') as log_file:
-            log_file.write(actions_user)
-        with open(f'handlers/custom_func/logs/{id_user}_logfile.log', 'r', encoding='utf-8') as log_file:
-            for id_chat in id_admins:
-                bot.send_message(id_chat, 'Пришел новый репорт')
-                bot.send_message(id_chat, f'Пользователь: {username}\n'
+def put_log_info(bot_rep: TeleBot, message: Message):
+    name_user = message.chat.username if message.chat.username else message.chat.first_name
+    id_user = message.chat.id
+    user_report = message.text
+    #  Путь к файлу с логами пользователя
+    path_to_file = Path(f'handlers/custom_func/logs/{name_user}_{id_user}.txt')
+    #  ID всех админов для отправки сообщения о новом репорт
+    id_admins = [admin.id_admin for admin in Admins.select()]
+    with open(path_to_file, encoding='utf-8') as log_file:
+        for id_chat in id_admins:
+            bot_rep.send_message(id_chat, 'Пришел новый репорт')
+            bot_rep.send_message(id_chat, f'Пользователь: {name_user}\n'
                                           f'id пользователя: {id_user}\n'
                                           f'Сообщение: {user_report}')
-                bot.send_document(id_chat, log_file)
+            bot_rep.send_document(id_chat, log_file)
