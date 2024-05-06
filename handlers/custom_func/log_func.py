@@ -1,12 +1,8 @@
-import os
 import logging.config
 from logging import Logger
 from telebot import TeleBot
 from database.list_admins import Admins
-from database.logging_users import UserAction
-from datetime import datetime
 from telebot.types import Message
-from states.user_state import UserState
 from pathlib import Path
 
 
