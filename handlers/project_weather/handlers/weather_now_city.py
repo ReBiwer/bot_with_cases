@@ -19,7 +19,7 @@ def weather_user_city(call: CallbackQuery):
     UserState.downloads = get_photo_dog(message)
     res_city_username = UserState.city_username = get_name_now_city(message)  # получаем имя города пользователя
     if res_city_username != 'Не удалось получить имя вашего текущего города':
-        data_about_weather = get_weather(res_city_username, message)  # получаем информацию о погоде в городе
+        data_about_weather = get_weather(res_city_username)  # получаем информацию о погоде в городе
         if data_about_weather != 'Не удалось получить информацию о погоде в городе':
             info_about_weather = weather_detection(data_about_weather)  # обрабатываем информацию о погоде в городе
             bot.send_message(message.chat.id, info_about_weather[0])

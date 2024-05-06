@@ -1,10 +1,11 @@
 from moviepy import editor
 from telebot.types import CallbackQuery, Message
 from handlers.custom_func.decorators import update_UserState_action
-from handlers.custom_func.log_func import log_action
 from keyboards.inline.restart import restart_button
 from loader import bot
 import os
+
+from states.user_state import UserState
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'extract_audio')
@@ -14,14 +15,14 @@ def start_extract_audio(call: CallbackQuery):
     Старт проекта 'аудио из видео'
     """
     message = call.message
-    log_action('Старт извлечения аудио. Запрос видео для обработки', message)
+    UserState.current_logger.info('Старт извлечения аудио. Запрос видео для обработки')
     response = bot.send_message(message.chat.id, 'Загрузите видео из которого вы хотите извлечь аудио')
     bot.register_next_step_handler(response, extraction_audio)
 
 
 @update_UserState_action
 def extraction_audio(message: Message):
-    log_action('Начало обработки видео.', message)
+    UserState.current_logger.info('Начало обработки видео.')
     bot.send_message(message.chat.id, 'Идет обработка файла, подождите немного...')
     chat_id = message.chat.id
     path_video_from_mes = bot.get_file(message.video.file_id).file_path
@@ -43,4 +44,4 @@ def extraction_audio(message: Message):
         bot.send_document(chat_id, audio)
 
     bot.send_message(chat_id, 'Прошу, вот ваш файл', reply_markup=restart_button())
-    log_action('Аудио было извлечено успешно', message)
+    UserState.current_logger.info('Аудио было извлечено успешно')

@@ -4,7 +4,6 @@ from logging import Logger
 from telebot import TeleBot
 from database.list_admins import Admins
 from database.logging_users import UserAction
-from database.logging_admins import AdminAction
 from datetime import datetime
 from telebot.types import Message
 from states.user_state import UserState
@@ -48,28 +47,6 @@ def get_dict_config(name_user: str, id_user: int):
             },
         }
     return dict_config
-
-
-def log_action(mess_log, message: Message):
-    name_user = message.chat.username if message.chat.username else message.chat.first_name
-    if UserState.admin_access:
-        admin_action = AdminAction.create(id_admin=message.chat.id,
-                                          username_admin=name_user,
-                                          action_admin=f'handler: {UserState.action} -- '
-                                                       f'message: {mess_log} -- '
-                                                       f'access right: admin',
-                                          time_action=datetime.now(),
-                                          )
-        admin_action.save()
-    else:
-        user_action = UserAction.create(id_user=message.chat.id,
-                                        name=name_user,
-                                        action=f'handler: {UserState.action} -- '
-                                               f'message: {mess_log} -- '
-                                               f'access right: user',
-                                        time_action=datetime.now(),
-                                        )
-        user_action.save()
 
 
 def put_log_info(bot: TeleBot, message: Message):

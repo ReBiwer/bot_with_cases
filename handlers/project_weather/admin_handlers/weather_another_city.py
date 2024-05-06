@@ -6,15 +6,14 @@ from keyboards.inline.yes_no_inline import yes_no_keyboard_inline
 from handlers.project_weather.funcs.weather_in_city import get_weather
 from handlers.project_weather.funcs.weather_detection import weather_detection
 from handlers.project_weather.funcs.photo_dog import get_photo_dog
-from handlers.custom_func.log_func import log_action
 from states.user_state import UserState
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'another_city')
 @update_UserState_action
 def weather_another_city(call: CallbackQuery):
-    message = call.message
-    log_action('команда - "weather_another_city"', message)
+    message: Message = call.message
+    UserState.current_logger.info('команда - "weather_another_city"')
     UserState.downloads = get_photo_dog(message)
     response_admin = bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)
@@ -23,8 +22,8 @@ def weather_another_city(call: CallbackQuery):
 @update_UserState_action
 def put_weather(message: Message):
     city = message.text.strip().lower()
-    log_action(f'команда - "put_weather", город - {city}', message)
-    data_about_weather = get_weather(city, message)
+    UserState.current_logger.info(f'команда - "put_weather", город - {city}')
+    data_about_weather = get_weather(city)
     if data_about_weather != 'Не удалось получить информацию о погоде в городе':
         info_about_weather = weather_detection(data_about_weather, city)
         bot.send_message(message.chat.id, info_about_weather[0])
@@ -45,7 +44,7 @@ def put_weather(message: Message):
 @update_UserState_action
 def get_weather_again(call):
     message = call.message
-    log_action('команда - рестарт команды "put_weather"', message)
+    UserState.current_logger.info('команда - рестарт команды "put_weather"')
     UserState.downloads = get_photo_dog(message)
     response_admin = bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)
