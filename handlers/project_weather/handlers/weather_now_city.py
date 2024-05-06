@@ -16,7 +16,7 @@ def weather_user_city(call: CallbackQuery):
     """Получение текущего города пользователя и вывод погоды в его городе"""
     message = call.message
     UserState.current_message = message
-    UserState.downloads = get_photo_dog(message)
+    UserState.downloads = get_photo_dog()
     res_city_username = UserState.city_username = get_name_now_city(message)  # получаем имя города пользователя
     if res_city_username != 'Не удалось получить имя вашего текущего города':
         data_about_weather = get_weather(res_city_username)  # получаем информацию о погоде в городе

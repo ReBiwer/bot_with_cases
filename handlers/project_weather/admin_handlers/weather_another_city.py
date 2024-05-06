@@ -14,7 +14,7 @@ from states.user_state import UserState
 def weather_another_city(call: CallbackQuery):
     message: Message = call.message
     UserState.current_logger.info('команда - "weather_another_city"')
-    UserState.downloads = get_photo_dog(message)
+    UserState.downloads = get_photo_dog()
     response_admin = bot.send_message(message.chat.id, 'Введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)
 
@@ -45,6 +45,6 @@ def put_weather(message: Message):
 def get_weather_again(call):
     message = call.message
     UserState.current_logger.info('команда - рестарт команды "put_weather"')
-    UserState.downloads = get_photo_dog(message)
+    UserState.downloads = get_photo_dog()
     response_admin = bot.send_message(message.chat.id, 'Снова введите город где вы хотите узнать погоду')
     bot.register_next_step_handler(response_admin, put_weather)

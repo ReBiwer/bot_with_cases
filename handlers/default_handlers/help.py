@@ -14,7 +14,7 @@ def bot_help(message: Message):
     UserState.current_logger.info('commands=["help"]')
     UserState.id = message.from_user.id
     UserState.username_user = message.from_user.username
-    UserState.downloads = get_photo_dog(message)
+    UserState.downloads = get_photo_dog()
     bot.send_message(message.chat.id, 'Этот бот предназанчен для получения погоды\n'
                                       'В вашем городе или в любом другом, в каком только захотите')
     bot.send_message(message.chat.id, 'Выберите где вы хотите узнать погоду', reply_markup=project_selection_keyboard())
