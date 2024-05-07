@@ -1,4 +1,5 @@
 import pyAesCrypt
+import os
 from telebot.types import CallbackQuery, Message
 from handlers.custom_func.decorators import update_UserState_action
 from keyboards.inline.restart import restart_button
@@ -6,7 +7,7 @@ from loader import bot
 from states.user_state import UserState
 
 
-@bot.callback_query_handler(func=lambda call: call == "encrypt_file")
+@bot.callback_query_handler(func=lambda call: call.data == "encrypt_file")
 @update_UserState_action
 def request_file_for_encryption(call: CallbackQuery):
     """Запрашиваем файл, который пользователь хочет зашифровать"""
@@ -20,19 +21,65 @@ def request_file_for_encryption(call: CallbackQuery):
 def get_file_for_encryption(message: Message):
     """Получаем файл, который нужно зашифровать и запрашиваем пароль для шифрования"""
     UserState.current_logger.info('Получение файла для шифрования. Запрос пароля')
+    chat_id = message.chat.id
+    path_file = bot.get_file(message.document.file_id).file_path
+    UserState.path_to_file_for_encryption = path_file
+    response = bot.send_message(chat_id, 'Прошу введите пароль. '
+                                         'Он понадобиться, когда вы захотите дешифровать свой файл'
+                                )
+    bot.register_next_step_handler(response, send_encryption_file)
 
 
 @update_UserState_action
 def send_encryption_file(message: Message):
-    """Получаем пароль для дешифровки файла и скидываем зашифрованный файл.
-    P.S. написать пользователю, чтобы название файла не изменял"""
-    UserState.current_logger.info('Отправка зашифрованного файла')
+    """
+    Получаем пароль для дешифровки файла и скидываем зашифрованный файл.
+    P.S. написать пользователю, чтобы название файла не изменял
+    """
+    UserState.current_logger.info('Пароль был получен. Начало обработки файла')
+
+    password = message.text
+    chat_id = message.chat.id
+    UserState.password_to_encryption_file = password
+
+    path_file = UserState.path_to_file_for_encryption
+
+    download_file_for_encryption = bot.download_file(path_file)
+    path_dir = os.path.abspath(
+        os.path.join('handlers', 'project_file_encryption', 'download_files', f'{chat_id}_user')
+    )
+    path_to_file = os.path.join(path_dir, f'{chat_id}_file.txt')
+    path_to_encrypt_file = os.path.join(path_dir, f'{chat_id}_file.aes')
+
+    if not os.path.isdir(path_dir):
+        UserState.current_logger.info('Создание директории с файлами пользователя')
+        os.makedirs(path_dir)
+
+    with open(path_to_file, 'wb') as file:
+        file.write(download_file_for_encryption)
+        UserState.current_logger.info('Сохранение полученного файла')
+
+    UserState.current_logger.info('Начало шифрования файла')
+    pyAesCrypt.encryptFile(path_to_file, path_to_encrypt_file, password)
+    UserState.current_logger.info('Конец шифрования файла')
+
+    with open(path_to_encrypt_file, 'rb') as encrypt_file:
+        bot.send_document(chat_id, encrypt_file)
+        UserState.current_logger.info('Зашифрованный файл был отправлен')
+
+    bot.send_message(chat_id, 'Прошу, ваш зашифрованный файл. '
+                              'Просьба не изменять название и расширение файла, '
+                              'если вы хотите в дальнейшем дешифровать ваш файл',
+                     reply_markup=restart_button()
+                     )
 
 
 @update_UserState_action
 def request_encryption_file(call: CallbackQuery):
-    """Получаем зашифрованный файл и запрашиваем пароль для дешифровки.
-    P.S. написать пользователю, что имя файла должно быть таким же, какое было присвоено этим ботом"""
+    """
+    Получаем зашифрованный файл и запрашиваем пароль для дешифровки.
+    P.S. написать пользователю, что имя файла должно быть таким же, какое было присвоено этим ботом
+    """
     UserState.current_logger.info('Запрос файла для дешифрования')
 
 

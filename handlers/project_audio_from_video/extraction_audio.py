@@ -32,7 +32,7 @@ def extraction_audio(message: Message):
     filename_audio = f'{path_dir}\\{chat_id}_video.mp3'
 
     if not os.path.isdir(path_dir):
-        os.mkdir(path_dir)
+        os.makedirs(path_dir)
 
     with open(filename_video, 'wb') as file:
         file.write(download_video)

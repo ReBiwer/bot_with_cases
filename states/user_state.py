@@ -11,5 +11,7 @@ class UserState(StatesGroup):
     action = str()
     downloads = State()
     city_username = State()
+    password_to_encryption_file = int()
+    path_to_file_for_encryption = State()
     current_message: Message = None
     current_logger: Logger = None
