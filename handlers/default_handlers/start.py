@@ -19,6 +19,7 @@ def bot_start(message: Message):
 
     UserState.current_logger = logger
     UserState.debug_logger = debug_logger
+    UserState.username = name_user
     chat_id = message.chat.id
     UserState.admin_status = check_admin_status(message)
     if UserState.admin_status:

@@ -6,5 +6,6 @@ def project_selection_keyboard() -> InlineKeyboardMarkup:
     but_1 = InlineKeyboardButton('Узнать погоду в своем городе', callback_data='weather_user_city')
     but_2 = InlineKeyboardButton('Извлечь аудио из видео', callback_data='extract_audio')
     but_3 = InlineKeyboardButton('Шифрование файла', callback_data='encrypt_file')
-    keyboard.add(but_1, but_2, but_3)
+    but_4 = InlineKeyboardButton('Дешифровка файла', callback_data='decrypt_file')
+    keyboard.add(but_1, but_2, but_3, but_4)
     return keyboard
