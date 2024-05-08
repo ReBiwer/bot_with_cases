@@ -1,0 +1,1 @@
+DEBUG логгер | 2024-05-08 09:18:08,194 | [<telebot.types.PhotoSize object at 0x750a81d3b730>, <telebot.types.PhotoSize object at 0x750a81db4310>, <telebot.types.PhotoSize object at 0x750a81db4fd0>, <telebot.types.PhotoSize object at 0x750a81db5ab0>]
