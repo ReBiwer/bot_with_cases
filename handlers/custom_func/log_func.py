@@ -6,22 +6,27 @@ from telebot.types import Message
 from pathlib import Path
 
 
-def get_logger(name_user: str, id_user: int) -> Logger:
+def get_logger(name_user: str, id_user: int) -> tuple[Logger, Logger]:
     dict_config: dict = get_dict_config(name_user, id_user)
     logging.config.dictConfig(dict_config)
     logger: Logger = logging.getLogger(f'Пользователь: {name_user} ({id_user})')
-    return logger
+    debug_logger: Logger = logging.getLogger(f'DEBUG логгер')
+    return logger, debug_logger
 
 
 def get_dict_config(name_user: str, id_user: int):
     path_to_file = Path(f'handlers/custom_func/logs/{name_user}_{id_user}.txt')
+    path_to_debug_file = Path(f'handlers/custom_func/debug_logs/{name_user}_{id_user}.txt')
     dict_config = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
             "simple": {
                 "format": "%(name)s | %(asctime)s | %(message)s",
-            }
+            },
+            "for_debug": {
+                "format": "%(level)s | %(name)s | %(message)s",
+            },
         },
         "handlers": {
             "base_handler": {
@@ -33,12 +38,26 @@ def get_dict_config(name_user: str, id_user: int):
                 "formatter": "simple",
                 "filename": path_to_file,
                 "encoding": "utf-8",
+            },
+            "debug_handler": {
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "when": "h",
+                "interval": 10,
+                "backupCount": 5,
+                "level": "DEBUG",
+                "formatter": "simple",
+                "filename": path_to_debug_file,
+                "encoding": "utf-8",
             }
         },
         "loggers": {
             f'Пользователь: {name_user} ({id_user})': {
                 "level": "INFO",
                 "handlers": ["base_handler"]
+            },
+            f'DEBUG логгер': {
+                "level": "DEBUG",
+                "handlers": ["debug_handler"]
             },
         },
     }

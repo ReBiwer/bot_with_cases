@@ -15,3 +15,4 @@ class UserState(StatesGroup):
     path_to_file_for_encryption = State()
     current_message: Message = None
     current_logger: Logger = None
+    debug_logger: Logger = None

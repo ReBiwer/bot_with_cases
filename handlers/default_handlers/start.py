@@ -15,9 +15,10 @@ from keyboards.admin_keyboards.inline.user_choice import user_choice
 def bot_start(message: Message):
     name_user = message.chat.username if message.chat.username else message.chat.first_name
     id_user = message.chat.id
-    logger: Logger = get_logger(name_user, id_user)
+    logger, debug_logger = get_logger(name_user, id_user)
 
     UserState.current_logger = logger
+    UserState.debug_logger = debug_logger
     chat_id = message.chat.id
     UserState.admin_status = check_admin_status(message)
     if UserState.admin_status:
