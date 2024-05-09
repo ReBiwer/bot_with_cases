@@ -14,4 +14,5 @@ class UserState(StatesGroup):
     city_username = State()
     current_message: Message = None
     current_logger: Logger = None
-    pdf_file_writer: PdfFileWriter = None
+    pdf_file_user: bytes = None
+    unic_pdf_name: str = str()
