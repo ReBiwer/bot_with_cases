@@ -1,5 +1,8 @@
-DEBUG логгер | 2024-05-08 09:18:08,194 | [<telebot.types.PhotoSize object at 0x750a81d3b730>, <telebot.types.PhotoSize object at 0x750a81db4310>, <telebot.types.PhotoSize object at 0x750a81db4fd0>, <telebot.types.PhotoSize object at 0x750a81db5ab0>]
-DEBUG логгер | 2024-05-08 13:47:32,745 | Путь для скачивания файла: photos/file_5.jpg
-DEBUG логгер | 2024-05-08 13:47:36,510 | file_dir: photos, file_name: file_5, file_extension: file_5
-DEBUG логгер | 2024-05-08 13:47:55,487 | Путь для скачивания файла: documents/file_8.aes
-DEBUG логгер | 2024-05-08 13:47:55,487 | file_dir: documents, file_name: file_8, file_extension: file_8
+DEBUG логгер | 2024-05-09 12:13:42,787 | Путь для скачивания файла: photos/file_9.jpg
+DEBUG логгер | 2024-05-09 12:13:49,290 | file_dir: photos, file_name: file_9, file_extension: file_9
+DEBUG логгер | 2024-05-09 12:14:06,833 | Путь для скачивания файла: documents/file_10.aes
+DEBUG логгер | 2024-05-09 12:14:06,833 | file_dir: documents, file_name: file_10, file_extension: file_10
+DEBUG логгер | 2024-05-09 12:15:45,089 | Путь для скачивания файла: documents/file_11.txt
+DEBUG логгер | 2024-05-09 12:15:48,309 | file_dir: documents, file_name: file_11, file_extension: file_11
+DEBUG логгер | 2024-05-09 12:16:43,514 | Путь для скачивания файла: documents/file_12.aes
+DEBUG логгер | 2024-05-09 12:16:43,514 | file_dir: documents, file_name: file_12, file_extension: file_12
