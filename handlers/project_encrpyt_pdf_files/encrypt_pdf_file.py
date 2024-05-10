@@ -1,5 +1,5 @@
 import os
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter, PdfReader
 from telebot.types import CallbackQuery, Message
 from states.user_state import UserState
 from loader import bot
@@ -24,6 +24,7 @@ def get_pdf_file(message: Message):
     path_file = bot.get_file(message.document.file_id).file_path
     UserState.unic_pdf_name, extension_file = get_name_extension(path_file)
     UserState.pdf_file_user = bot.download_file(path_file)
+
     response = bot.send_message(chat_id, 'Введите пароль')
     bot.register_next_step_handler(response, send_encrypt_pdf_file)
 
@@ -36,16 +37,19 @@ def send_encrypt_pdf_file(message: Message):
 
     path_to_download_file, path_to_protect_file = download_file_in_dir(message)
 
-    pdf_writer = PdfFileWriter()
-    pdf = PdfFileReader(path_to_download_file)
+    pdf_writer = PdfWriter()
+    pdf = PdfReader(path_to_download_file)
 
-    for page in range(pdf.numPages):
-        pdf_writer.add_page(pdf.pages[page])
+    for page in pdf.pages:
+        pdf_writer.add_page(page)
 
     pdf_writer.encrypt(password)
+
     with open(path_to_protect_file, 'wb') as protect_file:
         pdf_writer.write(protect_file)
-        bot.send_document(chat_id, protect_file)
+
+    with open(path_to_protect_file) as sending_file:
+        bot.send_document(chat_id, sending_file)
         bot.send_message(chat_id, 'Ваш зашифрованный файл')
 
 
