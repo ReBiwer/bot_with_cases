@@ -1,6 +1,7 @@
 import os
 from PyPDF2 import PdfWriter, PdfReader
 from telebot.types import CallbackQuery, Message
+from keyboards.inline.restart import restart_button
 from states.user_state import UserState
 from loader import bot
 from handlers.custom_func.decorators import update_UserState_action
@@ -48,9 +49,9 @@ def send_encrypt_pdf_file(message: Message):
     with open(path_to_protect_file, 'wb') as protect_file:
         pdf_writer.write(protect_file)
 
-    with open(path_to_protect_file) as sending_file:
-        bot.send_document(chat_id, sending_file)
-        bot.send_message(chat_id, 'Ваш зашифрованный файл')
+    with open(path_to_protect_file, 'rb') as sending_file:
+        bot.send_document(chat_id, sending_file, protect_content=True)
+        bot.send_message(chat_id, 'Ваш зашифрованный файл', reply_markup=restart_button())
 
 
 def get_name_extension(file_path):
