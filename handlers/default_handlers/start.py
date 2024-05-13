@@ -27,10 +27,11 @@ def bot_start(message: Message):
                          f'Как бы вы хотели продолжить?',
                          reply_markup=user_choice())
     else:
-        bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
-                                  'Я создан с целью продемонстрировать кейсы моего создателя\n'
-                                  'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
-                                  'Кнопка репорта находится в "меню"')
+        bot.send_message(chat_id, 'Это бот с кейсами\n'
+                                  'Цель: показать некоторые кейсы\n'
+                                  'Если возникнуть проблемы с ботом, прошу сообщить о проблеме\n'
+                                  'Либо через меню бот, либо лично мне\n'
+                                  'https://t.me/ReBiwer')
         bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
                          reply_markup=project_selection_keyboard())
         UserState.current_logger.info('Команда - start')
@@ -50,10 +51,11 @@ def start_admin(call: CallbackQuery):
 def start_user(call: CallbackQuery):
     chat_id = call.message.chat.id
     UserState.admin_access = False
-    bot.send_message(chat_id, 'Я бот Быкова Владимира\n'
-                              'Я создан с целью продемонстрировать кейсы моего создателя\n'
-                              'Если возникнут какие-то ошибки в работе бота, прошу сообщить об этом\n'
-                              'Кнопка репорта находится в "меню"')
+    bot.send_message(chat_id, 'Это бот с кейсами\n'
+                              'Цель: показать некоторые кейсы\n'
+                              'Если возникнуть проблемы с ботом, прошу сообщить о проблеме\n'
+                              'Либо через меню бот, либо лично мне\n'
+                              'https://t.me/ReBiwer')
     bot.send_message(chat_id, 'Выберите кейс, который вы бы хотели протестировать?',
                      reply_markup=project_selection_keyboard())
     UserState.current_logger.info(f'Администратор {call.message.chat.username} зашел как пользователь')
